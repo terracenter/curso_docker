@@ -1,0 +1,55 @@
+Notas.txt
+
+Opciones del Dockerfile, para contruir una imagen
+
+FROM - Es la image / sistema operativo / base con la cual se creara la  nueva imagen
+RUN - Se utiliza para ejecutar las lineas de comando durante la creación de la imagen
+COPY - Copia contenido dentro del container
+ADD  - Añade / copia contenido a contenedor, se recomienda para ULrs
+ENV  - Se usa para agregar variables de entorno
+WORKDIR - Area de trabajo donde esta ubicado el usuario 
+EXPOSE - Se utiliza para exponer puertos
+LABEL - Se usa como etiquetas para la imagen, es para dar metadata a la imagen
+USER - Define que usuario esta ejecutando la tarea
+VOLUME - Colocar data persistente
+
+CMD - Ejecuta un proceso o un script
+
+.dockerignore - Ignora cualquier cosa que esta en el directorio actual de trabajo, es buena practica tener en el directorio de trabajo solo lo que se requiere para la imagen, y en caso contrario usar el .dockerignore.
+
+BUENAS PRACTICAS (Sobre todo para las imaegenes)
+================
+
+1. lOS SEvicios deben ser efimeros
+    Se puede poder destruir con facilidad
+
+2. Un solo servicio por contenedor
+
+3. usar .dockerignore
+
+4. Pocas capas
+
+5. Multilinea \
+
+6. Varios algumentos en una sola capas
+
+7. No instalar paquetes innecesarios
+
+8. Usar LABEL
+
+
+# Crear sertificado SSL autofirmado - centos 7
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout docker.key -out docker.crt
+
+# Debian 
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout docker.key -out docker.crt
+
+# Borrar imagenes huerfanas (que mo tienen referencia)
+docker rmi -f  $(docker images -f "dangling=true" -q)
+
+# Borrar contenedores, que esten en ejección o los que algune vez se ejecutaron
+docker rm -f $(docker ps -qa) 
+
+# Contruir images con otro nombre del Dockerfile
+    docker build  -t apache:php7.4-ssl -f nombreDelDockerfile  .
+    La opción -f seguida del nombre del dockerfile
